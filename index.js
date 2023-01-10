@@ -4,14 +4,17 @@ const app = express();//Instantiate an express app, the main work horse of this 
 app.set("view engine", "ejs");
 var cnt=0;
 
-app.get('/', (req, res) => {        //get requests to the root ("/") will route here
+app.use('/CSS', express.static(__dirname + "/CSS"));
+
+ const router = express.Router();
+router.get('/', (req, res) => {        //get requests to the root ("/") will route here
     res.sendFile('./public/pages/index.html', {root: __dirname});      //server responds by sending the index.html file to the client's browser
                                                         //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
 });
-app.get('/About', (req, res) => {        //get requests to the root ("/") will route here
+router.get('/About', (req, res) => {        //get requests to the root ("/") will route here
     res.sendFile('./public/pages/about.html', {root: __dirname});      //server responds by sending the index.html file to the client's browser                                                  //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
 });
-app.get('/TPL', (req, res) => {        //get requests to the root ("/") will route here
+router.get('/TPL', (req, res) => {        //get requests to the root ("/") will route here
       cnt++;
       res.render("TPL", {
       port: port,
@@ -19,8 +22,11 @@ app.get('/TPL', (req, res) => {        //get requests to the root ("/") will rou
     });
                                                   //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
 });
-// const router = express.Router();
-// var err=0;
+router.get('/BookList', (req, res) => {        //get requests to the root ("/") will route here
+      res.render("BookList", {
+    });
+                                                  //the .sendFile method needs the absolute path to the file, see: https://expressjs.com/en/4x/api.html#res.sendFile 
+});
 
 // router.get('/',function(req,res){
 //   res.render("index", {
@@ -29,6 +35,7 @@ app.get('/TPL', (req, res) => {        //get requests to the root ("/") will rou
 //     });
 // });
 
+// var err=0;
 // router.post('/login',function(req,res){
 //   const { uname, passwd } = req.body;
 
@@ -46,8 +53,8 @@ app.get('/TPL', (req, res) => {        //get requests to the root ("/") will rou
 // });
 
 
-// //add the router
-// app.use('/', router);
+//add the router
+app.use('/', router);
 
 
 app.listen(port, () => {            //server starts listening for any attempts from a client to connect at port: {port}
